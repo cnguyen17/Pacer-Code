@@ -44,33 +44,16 @@
   width: fit-content;
 }
 
-/* .search1 {
-  width: 207px;
-  position: relative;
-  display: inline-block;
-  flex-shrink: 0;
-} */
 .spaceSearchBarParent,
 .weatherSpecifics1 {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  /* max-width: 100%;  */
-  /* width: 207px;  */
   position: relative;
   display: inline-block;
-  /* background-color: var(--color-gray-100); */
-  
 }
-/* .weatherSpecifics1 {
-  flex: 1;
-  border-radius: var(--br-58xl-7);
-  background-color: var(--color-gray-100);
-  padding: 0 var(--padding-4xl) 8px;
-  box-sizing: border-box;
-  z-index: 1;
-} */
+
 .spaceSearchBarParent {
   width: 408px;
 }

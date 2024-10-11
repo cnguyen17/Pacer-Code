@@ -1,10 +1,7 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import axios from 'axios'; // To make API requests
 import styles from "./FrameComponent.module.css";
-// import sunnyIcon from '/sunny.png'; // Local icon paths
-// import rainyIcon from '/rainy.png';
-// import mistIcon from '/mist.png';
-// import cloudIcon from "/weather-image@2x.png"; 
+
 export type FrameComponentType = {
   className?: string;
   data: JSON;
@@ -15,9 +12,7 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
   data, 
 }) => {
 
-
   const [stateName, setStateName] = useState('');  // State for storing the state name
-
   // API Key for Google Geocoding API (use your actual API key)
   const API_KEY = 'AIzaSyCPujiAjmpSYsNOHxNAUDP5-_aMxXWZhj8';
 
@@ -70,26 +65,26 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
   const getCurrentDay = () => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const now = new Date();
-    return days[now.getDay()]; // Get the current day as a number (0-6)
+    return days[now.getDay()]; 
   };
 
   const getWeatherIcon = (description: string) => {
     switch (description.toLowerCase()) {
       case 'clear':
       case 'sunny':
-        return '/sunny.png'; // Path relative to the public folder
+        return '/sunny.png';
       case 'rain':
       case 'drizzle':
-        return '/rain.png'; // Path relative to the public folder
+        return '/rain.png'; 
       case 'mist':
       case 'fog':
-        return '/mist.png'; // Path relative to the public folder
+        return '/mist.png'; 
       case 'clouds':
         return '/cloudy.png';
       case 'overcast':
-        return '/cloudy.png'; // If you have a cloudy image
+        return '/cloudy.png'; 
       default:
-        return '/default-icon.png'; // Path to a default icon if none matches
+        return '/default-icon.png'; 
     }
   };
 
@@ -136,9 +131,7 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
               </div>
             </div>
             <div className={styles.losAngelesCalifornia}>
-              {/* {data.name}, {stateName || 'Loading state...'} */}
-              {data.name ? (<>{data.name}{stateName && `, ${stateName}`}</>
-              ) : ('Loading location...')}
+              {data.name ? (<>{data.name}{stateName && `, ${stateName}`}</>) : ('Loading location...')}
             </div>
           </div>
         </div>
