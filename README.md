@@ -21,7 +21,7 @@ To build the packages, follow these steps:
 # Visit https://git-scm.com to download and install console Git if not already installed
 
 # Clone the repository
-git clone [https://github.com/cnguyen17/Pacer-Code.git]
+git clone https://github.com/cnguyen17/Pacer-Code.git
 
 # Navigate to the project directory
 
