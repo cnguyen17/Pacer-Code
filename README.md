@@ -8,7 +8,7 @@
 
 - ## 🚀 About
 
-This simple weather application displays key weather information such as Temperature, Feel like Temperature, wind speed, and humidity. 
+This simple weather application displays key weather information such as Temperature, Feel like Temperature, Wind Speed, and Humidity. Stay informed and up-to-date with the latest weather conditions, no matter where you are.
 
 ## 📝 How to Build
 
