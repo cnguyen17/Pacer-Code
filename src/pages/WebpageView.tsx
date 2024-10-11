@@ -16,11 +16,6 @@ const WebpageView: FunctionComponent = () => {
 
   const searchLocation = async (event) => {
     if (event.key === 'Enter') {
-      // axios.get(url).then((response) => {
-      //   setData(response.data)
-      //   console.log(response.data)
-      // })
-      // setLocation('')
       setErrorMessage('');
 
       try {
@@ -40,7 +35,7 @@ const WebpageView: FunctionComponent = () => {
         setLocation('');
       } catch (error) {
         // Catch any errors and set the error message
-        setErrorMessage('Invalid input. Please enter a valid location.');
+        setErrorMessage('Invalid city name, please input valid city name');
         console.error('Error:', error.message || error);
       }
     }
@@ -60,7 +55,47 @@ const WebpageView: FunctionComponent = () => {
         type="text"
         variant="outlined"
         style={{ width: '400px', height: '40px' }}
-        sx={{ "& .MuiInputBase-root": { height: "40px" }, width: "400px" }}
+        // sx={{ "& .MuiInputBase-root": { height: "40px" }, width: "400px" }}
+        // sx={{
+        //   "& .MuiOutlinedInput-root": {
+        //     backgroundColor: "rgba(0, 0, 0, 0.6)",  // Dark transparent background
+        //     borderRadius: "12px",  // Rounded edges
+        //     "& fieldset": {
+        //       borderColor: "transparent",  
+        //     },
+        //     "&:hover fieldset": {
+        //       borderColor: "rgba(255, 255, 255, 0.8)",  // Border 
+        //     },
+        //   },
+        //   "& .MuiInputBase-root": { height: "50px" },  
+        //   width: "420px",  
+        // }}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",  // Dark transparent background
+            borderRadius: "10px",  // Rounded edges
+            padding: "10px",  // Add padding for larger background
+            color: "white",  // Ensure text is white
+            "&:hover fieldset": {
+              borderColor: "white", // Change border color on hover
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white", // Border color when focused
+            },
+            "& input": {
+              fontWeight: "bold",  // Bold text when typing
+              color: "white",  // White text color
+            },
+          },
+          "& .MuiInputLabel-root": {
+            color: "rgba(255, 255, 255, 1)",  // Label color (darker when not focused)
+          },
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: "white",  // Label color when focused
+          },
+             "& .MuiInputBase-root": { height: "50px" },  
+          width: "420px",  
+        }}
       />
           {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         </div>

@@ -1,14 +1,13 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
+import axios from 'axios'; // To make API requests
 import styles from "./FrameComponent.module.css";
 // import sunnyIcon from '/sunny.png'; // Local icon paths
 // import rainyIcon from '/rainy.png';
 // import mistIcon from '/mist.png';
 // import cloudIcon from "/weather-image@2x.png"; 
-
-
 export type FrameComponentType = {
   className?: string;
-  data: JSON
+  data: JSON;
 };
 
 const FrameComponent: FunctionComponent<FrameComponentType> = ({
@@ -17,6 +16,46 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
 }) => {
 
 
+  const [stateName, setStateName] = useState('');  // State for storing the state name
+
+  // API Key for Google Geocoding API (use your actual API key)
+  const API_KEY = 'AIzaSyCPujiAjmpSYsNOHxNAUDP5-_aMxXWZhj8';
+
+  // Function to make API call and get the state from the city name
+  const getGeocode = async (cityName: string) => {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=${API_KEY}`;
+
+    try {
+      const response = await axios.get(url);
+      const results = response.data.results;
+
+      if (results.length > 0) {
+        const addressComponents = results[0].address_components;
+        const stateInfo = addressComponents.find(component =>
+          component.types.includes('administrative_area_level_1')
+        );
+        
+        if (stateInfo) {
+          setStateName(stateInfo.long_name);  // Set the state name from the response
+        } else {
+          setStateName('State not found');
+          console.log(stateName)
+        }
+      } else {
+        setStateName('No results found');
+      }
+    } catch (error) {
+      console.error('Error fetching geocode data:', error);
+      setStateName('Error fetching state');
+    }
+  };
+
+  // Call getGeocode whenever data.name (city name) is available
+  useEffect(() => {
+    if (data.name) {
+      getGeocode(data.name);
+    }
+  }, [data.name]);  // Trigger the effect when the city name changes
 
   // Function to get the current date in the desired format
   const getCurrentDate = () => {
@@ -34,7 +73,7 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
     return days[now.getDay()]; // Get the current day as a number (0-6)
   };
 
-  const getWeatherIcon = (description) => {
+  const getWeatherIcon = (description: string) => {
     switch (description.toLowerCase()) {
       case 'clear':
       case 'sunny':
@@ -49,20 +88,16 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
         return '/cloudy.png';
       case 'overcast':
         return '/cloudy.png'; // If you have a cloudy image
-      // Add more cases for other weather descriptions
       default:
         return '/default-icon.png'; // Path to a default icon if none matches
     }
   };
-  
 
   // Call the functions to get the current date and day
   const currentDate = getCurrentDate();
   const currentDay = getCurrentDay();
   const weatherCondition = data.weather && data.weather[0] ? data.weather[0].main : null;
   const WeatherIcon = weatherCondition ? getWeatherIcon(weatherCondition) : '/default-icon.png';
-
-   
 
   return (
     <section className={[styles.weatherDisplayParent, className].join(" ")}>
@@ -76,7 +111,7 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
             <div className={styles.separatorParent}>
               <div className={styles.separator}>
                 {data.main ? <h1>{data.main.temp.toFixed()}°F</h1> : null}
-                </div>
+              </div>
               <div className={styles.temperatureCircleWrapper}>
                 <div className={styles.temperatureCircle} />
               </div>
@@ -95,13 +130,15 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
                 <div className={styles.cloudy}>
                   {data.weather ? <p>{data.weather[0].main}</p> : null}
                 </div>
-                <div className={styles.dec2023}>Feels Like 
-                  {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}°F</p> : null}
+                <div className={styles.dec2023}>
+                  Feels Like {data.main ? <p className="bold">{data.main.feels_like.toFixed()}°F</p> : null}
                 </div>
               </div>
             </div>
             <div className={styles.losAngelesCalifornia}>
-              {data.name}, California
+              {/* {data.name}, {stateName || 'Loading state...'} */}
+              {data.name ? (<>{data.name}{stateName && `, ${stateName}`}</>
+              ) : ('Loading location...')}
             </div>
           </div>
         </div>
@@ -111,7 +148,7 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
           <div className={styles.humidityDetails}>
             <div className={styles.humidity}>Humidity</div>
             <div className={styles.humidityValue}>
-              {data.main ? <span className='bold'>{data.main.humidity}%</span> : <span className='bold'></span>}
+              {data.main ? <span className="bold">{data.main.humidity}%</span> : null}
             </div>
           </div>
         </div>
@@ -119,9 +156,9 @@ const FrameComponent: FunctionComponent<FrameComponentType> = ({
           <div className={styles.windSpeedWrapper}>
             <div className={styles.windSpeed}>Wind Speed</div>
           </div>
-          <div className={styles.humidityValue}> 
-            {data.wind ? <span className='bold'>{data.wind.speed.toFixed()} MPH</span> : <span className='bold'></span>}
-            </div>
+          <div className={styles.humidityValue}>
+            {data.wind ? <span className="bold">{data.wind.speed.toFixed()} MPH</span> : null}
+          </div>
         </div>
       </div>
     </section>
